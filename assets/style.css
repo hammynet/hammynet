@@ -93,6 +93,10 @@ a.header-link {
     text-decoration: none;
 }
 
+h1 {
+    font-size: 2em;
+}
+
 .main {
     font-family: 'Source Sans Pro', sans-serif;
     padding-top: .3em;

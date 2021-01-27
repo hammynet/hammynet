@@ -1,0 +1,44 @@
+---
+layout: default
+title: siaas
+permalink: /siaas/
+---
+
+<section class="main" id="siaas">
+    <div class="subtitle">SetInterval As A Service (SIAAS)</div>
+    <p>
+        SIAAS is a simple API for allowing developers to have an action run every x period of time on a client's tab when the tab is in the background.
+        This is an alternative to setInterval because as discussed in the "Why" section of this page setInterval has been massively hindered for any background tabs.
+        SIAAS lets you have actions run on the users browser with a frequency of up to once every second when the client's browser receives a ping from our servers.
+    <p>
+</section>
+
+<section class="main" id="why">
+    <div class="subtitle">Why</div>
+    <p>
+        SIAAS was launched as a reaction to a recent post on the <a href="https://developer.chrome.com/blog/timer-throttling-in-chrome-88/">chrome developer blog</a> by <a href="https://twitter.com/jaffathecake">Jake Archibald</a>.
+        In this post it is shared that "Chrome 88 (January 2021) will heavily throttle chained JavaScript timers for hidden pages in particular conditions" with this throttling at worst meaning there would be a whole minute in-between setIntervals on a hidden page running.
+        This causes quite a problem for a website powered by hammy.network, <a href="https://scratchnotifier.cf/">scratchnotifier.cf</a>, which provides Scratch users with realtime (< 10s delay) notifications from Scratch, as now the delay would be at <i>least</i> a minute.
+        It is possible to switch ScratchNotifier to a better design that is not constantly polling our servers, but that redesign will take a complete rewrite of our backend so rollout would take a bit of time.
+        In the meantime this has been created with it acting as a temporary band-aid for our use-case and I assume could be a band-aid temporary or permanently for other developers.
+    <p>
+</section>
+
+<section class="main" id="usage">
+    <div class="subtitle">Usage</div>
+    <p>
+       <code><pre>
+// Connect to the WebSocket
+const socket = new WebSocket('wss://siaas.hammy.network');
+
+socket.addEventListener('open', function (event) {
+    socket.send('5000'); // Tell the server to ping you every 5000ms (minimum of 1000ms)
+});
+
+// Listen for messages
+socket.addEventListener('message', function () {
+    console.log('PING'); // Take action when the ping is received
+});
+       </pre></code>
+    <p>
+</section>
